@@ -4,168 +4,104 @@
 <meta charset="UTF-8">
 <title>SHOPHAIDANG-CHUNGMINHUYTIN</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-body{
-    margin:0;
-    font-family: Arial, Helvetica, sans-serif;
-    background:#f5f5f5;
-}
-header{
-    background:#fff;
-    padding:10px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-.logo{
-    font-weight:bold;
-    color:#ff6a00;
-    font-size:14px;
-}
-.search{
-    flex:1;
-    display:flex;
-}
-.search input{
-    flex:1;
-    padding:8px;
-    border:1px solid #ddd;
-    border-radius:5px 0 0 5px;
-}
-.search button{
-    background:#ff6a00;
-    border:none;
-    color:#fff;
-    padding:8px 12px;
-    border-radius:0 5px 5px 0;
-}
-.container{
-    padding:12px;
-}
-.card{
-    background:#fff;
-    border-radius:8px;
-    padding:12px;
-    margin-bottom:15px;
-}
-.tab{
-    display:flex;
-}
-.tab button{
-    flex:1;
-    padding:10px;
-    border:none;
-    font-weight:bold;
-}
-.active{
-    background:#ff6a00;
-    color:#fff;
-}
-input, select{
-    width:100%;
-    padding:10px;
-    margin-top:8px;
-    border:1px solid #ddd;
-    border-radius:5px;
-}
-.btn{
-    margin-top:12px;
-    width:100%;
-    padding:12px;
-    background:#ff6a00;
-    color:#fff;
-    border:none;
-    border-radius:5px;
-    font-size:16px;
-}
-.bottom{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background:#fff;
-    display:flex;
-    border-top:1px solid #ddd;
-}
-.bottom div{
-    flex:1;
-    text-align:center;
-    padding:8px;
-    font-size:12px;
-}
-.bottom .on{
-    color:#ff6a00;
-    font-weight:bold;
-}
-.hide{display:none;}
+body{margin:0;font-family:Arial;background:#f5f5f5}
+header{background:#fff;padding:10px;display:flex;gap:10px;align-items:center}
+.logo{color:#ff6a00;font-weight:bold;font-size:14px}
+.search{flex:1;display:flex}
+.search input{flex:1;padding:8px;border:1px solid #ddd;border-radius:5px 0 0 5px}
+.search button{padding:8px 12px;border:none;background:#ff6a00;color:#fff;border-radius:0 5px 5px 0}
+.container{padding:12px}
+.card{background:#fff;border-radius:8px;padding:12px;margin-bottom:15px}
+input,select{width:100%;padding:10px;margin-top:8px;border:1px solid #ddd;border-radius:5px}
+.btn{margin-top:12px;width:100%;padding:12px;background:#ff6a00;color:#fff;border:none;border-radius:5px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid #ddd}
+.bottom div{flex:1;text-align:center;padding:8px;font-size:12px}
+.on{color:#ff6a00;font-weight:bold}
+.hide{display:none}
 </style>
 </head>
 
 <body>
 
 <header>
-    <div class="logo">SHOPHAIDANG-CHUNGMINHUYTIN</div>
-    <div class="search">
-        <input placeholder="Tìm kiếm">
-        <button>🔍</button>
-    </div>
+  <div class="logo">SHOPHAIDANG-CHUNGMINHUYTIN</div>
+  <div class="search">
+    <input placeholder="Tìm kiếm">
+    <button>🔍</button>
+  </div>
 </header>
 
 <div class="container">
 
-    <!-- ĐĂNG NHẬP -->
-    <div class="card" id="login">
-        <h3>Đăng nhập</h3>
-        <input placeholder="Nhập tài khoản">
-        <input type="password" placeholder="Nhập mật khẩu">
-        <button class="btn" onclick="alert('Đăng nhập thành công (demo)')">Đăng nhập</button>
-    </div>
+<!-- TRANG CHỦ + NẠP TIỀN -->
+<div class="card" id="home">
+<h3>Nạp tiền</h3>
+<select id="menhgia">
+  <option value="">Chọn mệnh giá</option>
+  <option>50</option>
+  <option>100</option>
+  <option>200</option>
+  <option>500</option>
+</select>
+<button class="btn" onclick="nap()">Nạp ngay</button>
+</div>
 
-    <!-- NẠP THẺ -->
-    <div class="card hide" id="napthe">
-        <div class="tab">
-            <button class="active">NẠP THẺ</button>
-            <button>TOP NẠP</button>
-        </div>
+<!-- TÀI KHOẢN -->
+<div class="card hide" id="account">
+<h3>Tạo tài khoản</h3>
+<input id="reg_user" placeholder="Tên đăng nhập">
+<input id="reg_pass" type="password" placeholder="Mật khẩu">
+<button class="btn" onclick="register()">Đăng ký</button>
 
-        <select>
-            <option>Chọn nhà mạng</option>
-            <option>Viettel</option>
-            <option>Mobifone</option>
-            <option>Vinaphone</option>
-        </select>
+<hr>
 
-        <select>
-            <option>Chọn mệnh giá</option>
-            <option>10.000</option>
-            <option>20.000</option>
-            <option>50.000</option>
-            <option>100.000</option>
-        </select>
-
-        <input placeholder="Nhập mã seri">
-        <input placeholder="Nhập mã thẻ">
-        <input placeholder="Nhập mã bảo vệ (845)">
-
-        <button class="btn" onclick="alert('Nạp thẻ thành công (demo)')">Nạp ngay</button>
-    </div>
+<h3>Đăng nhập</h3>
+<input id="login_user" placeholder="Tên đăng nhập">
+<input id="login_pass" type="password" placeholder="Mật khẩu">
+<button class="btn" onclick="login()">Đăng nhập</button>
+</div>
 
 </div>
 
 <div class="bottom">
-    <div class="on" onclick="show('login')">Trang chủ</div>
-    <div>Danh mục</div>
-    <div onclick="show('napthe')">Nạp tiền</div>
-    <div>Mua nick</div>
-    <div onclick="show('login')">Tài khoản</div>
+<div class="on" onclick="show('home')">Trang chủ</div>
+<div>Danh mục</div>
+<div onclick="show('home')">Nạp tiền</div>
+<div>Mua nick</div>
+<div onclick="show('account')">Tài khoản</div>
 </div>
 
 <script>
 function show(id){
-    document.getElementById('login').classList.add('hide');
-    document.getElementById('napthe').classList.add('hide');
-    document.getElementById(id).classList.remove('hide');
+ document.getElementById('home').classList.add('hide')
+ document.getElementById('account').classList.add('hide')
+ document.getElementById(id).classList.remove('hide')
+}
+
+function register(){
+ let u=document.getElementById('reg_user').value
+ let p=document.getElementById('reg_pass').value
+ if(!u||!p) return alert('Vui lòng nhập đủ thông tin')
+ if(localStorage.getItem(u)) return alert('Tài khoản đã tồn tại')
+ localStorage.setItem(u,p)
+ alert('Tạo tài khoản thành công')
+}
+
+function login(){
+ let u=document.getElementById('login_user').value
+ let p=document.getElementById('login_pass').value
+ if(localStorage.getItem(u)===p){
+   alert('Đăng nhập thành công')
+ }else{
+   alert('Sai tài khoản hoặc mật khẩu')
+ }
+}
+
+function nap(){
+ let m=document.getElementById('menhgia').value
+ if(!m) return alert('Chọn mệnh giá')
+ alert('Nạp '+m+' thành công (chưa trừ tiền thật)')
 }
 </script>
 
