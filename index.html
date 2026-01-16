@@ -71,6 +71,11 @@ button{
 .buy{
     background:#00c853;
 }
+.balance{
+    margin-top:10px;
+    color:#00ff6a;
+    font-weight:bold;
+}
 footer{
     text-align:center;
     color:#aaa;
@@ -83,57 +88,102 @@ footer{
 <body>
 
 <header>
-    ShopHaiDang - ChungMinhUyTin
+ShopHaiDang - ChungMinhUyTin
 </header>
 
 <div class="container">
 
-    <div class="section">
-        <h2>Nạp Thẻ Cào</h2>
-        <div class="box">
-            <select>
-                <option>Chọn mệnh giá</option>
-                <option>20.000đ</option>
-                <option>50.000đ</option>
-                <option>100.000đ</option>
-                <option>200.000đ</option>
-            </select>
-            <input placeholder="Mã thẻ">
-            <input placeholder="Seri thẻ">
-            <button>NẠP TIỀN</button>
-        </div>
-    </div>
+<!-- ĐĂNG KÝ / ĐĂNG NHẬP -->
+<div class="section">
+<h2>Đăng ký / Đăng nhập</h2>
+<div class="box">
+<input id="username" placeholder="Tên tài khoản">
+<input id="password" type="password" placeholder="Mật khẩu">
+<button onclick="register()">Đăng ký</button>
+<button onclick="login()">Đăng nhập</button>
+<div class="balance" id="balance"></div>
+</div>
+</div>
 
-    <div class="section">
-        <h2>Acc Free Fire</h2>
+<!-- NẠP THẺ -->
+<div class="section">
+<h2>Nạp thẻ cào</h2>
+<div class="box">
+<select>
+<option>Chọn mệnh giá</option>
+<option>20.000đ</option>
+<option>50.000đ</option>
+<option>100.000đ</option>
+<option>200.000đ</option>
+<option>500.000đ</option>
+</select>
+<input placeholder="Mã thẻ">
+<input placeholder="Seri thẻ">
+<button>NẠP TIỀN</button>
+</div>
+</div>
 
-        <div class="acc-list">
+<!-- BÁN ACC -->
+<div class="section">
+<h2>Acc Free Fire</h2>
 
-            <!-- ACC 1 CÓ ẢNH -->
-            <div class="acc">
-                <img src="acc1.jpg" style="width:100%;max-width:260px;border-radius:10px;margin-bottom:8px;">
-                <h3>Acc Free Fire #1</h3>
-                <div class="price">260.000đ</div>
-                <button class="buy">Mua ngay</button>
-            </div>
+<div class="acc-list">
 
-            <!-- ACC 2 CHƯA CÓ ẢNH -->
-            <div class="acc">
-                <h3>Acc Free Fire #2</h3>
-                <div class="price">920.000đ</div>
-                <button class="buy">Mua ngay</button>
-            </div>
+<div class="acc">
+<img src="acc1.jpg" style="width:100%;max-width:260px;border-radius:10px;margin-bottom:8px;">
+<h3>Acc Free Fire #1</h3>
+<div class="price">260.000đ</div>
+<button class="buy" onclick="buy(260000)">Mua ngay</button>
+</div>
 
-        </div>
-    </div>
+<div class="acc">
+<img src="acc2.jpg" style="width:100%;max-width:260px;border-radius:10px;margin-bottom:8px;">
+<h3>Acc Free Fire #2</h3>
+<div class="price">920.000đ</div>
+<button class="buy" onclick="buy(920000)">Mua ngay</button>
+</div>
+
+</div>
+</div>
 
 </div>
 
 <footer>
-    <p>Facebook: Thế Kì Tuấn (Thế Kì Buôn Acc)</p>
-    <p>TikTok: @60mthinghi</p>
-    <p>Uy tín tạo nên thương hiệu</p>
+<p>Liên hệ Facebook / Zalo để giao dịch</p>
+<p>Uy tín tạo nên thương hiệu</p>
 </footer>
+
+<script>
+let users = JSON.parse(localStorage.getItem("users")) || {};
+let currentUser = null;
+
+function register(){
+  let u = username.value;
+  let p = password.value;
+  if(!u || !p) return alert("Nhập đủ thông tin");
+  if(users[u]) return alert("Tài khoản đã tồn tại");
+  users[u] = {password:p, balance:1000000};
+  localStorage.setItem("users", JSON.stringify(users));
+  alert("Đăng ký thành công");
+}
+
+function login(){
+  let u = username.value;
+  let p = password.value;
+  if(!users[u] || users[u].password !== p) return alert("Sai tài khoản hoặc mật khẩu");
+  currentUser = u;
+  balance.innerText = "Số dư: " + users[u].balance + " VNĐ";
+}
+
+function buy(price){
+  if(!currentUser) return alert("Vui lòng đăng nhập");
+  if(users[currentUser].balance < price) return alert("Không đủ số dư");
+  users[currentUser].balance -= price;
+  localStorage.setItem("users", JSON.stringify(users));
+  balance.innerText = "Số dư: " + users[currentUser].balance + " VNĐ";
+  alert("Mua acc thành công (demo)");
+}
+</script>
 
 </body>
 </html>
