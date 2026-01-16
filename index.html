@@ -3,186 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <title>ShopHaiDang - ChungMinhUyTin</title>
-
 <style>
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#0f0f0f;
-    color:#fff;
-}
-header{
-    background:#ff9800;
-    padding:15px;
-    text-align:center;
-    font-size:24px;
-    font-weight:bold;
-}
-.container{
-    width:90%;
-    margin:auto;
-    padding:20px 0;
-}
-.section{
-    margin-bottom:40px;
-}
-.section h2{
-    border-left:5px solid #ff9800;
-    padding-left:10px;
-}
-.box{
-    background:#1b1b1b;
-    padding:15px;
-    border-radius:10px;
-    max-width:420px;
-}
-input, select{
-    width:100%;
-    padding:10px;
-    margin-bottom:10px;
-    border-radius:5px;
-    border:none;
-}
-button{
-    width:100%;
-    padding:12px;
-    background:#ff9800;
-    border:none;
-    border-radius:5px;
-    font-weight:bold;
-    cursor:pointer;
-}
-.acc-list{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:20px;
-}
-.acc{
-    background:#1b1b1b;
-    padding:15px;
-    border-radius:10px;
-    text-align:center;
-}
-.price{
-    color:#00ff6a;
-    margin:8px 0;
-    font-weight:bold;
-}
-.buy{
-    background:#00c853;
-}
-.balance{
-    margin-top:10px;
-    color:#00ff6a;
-    font-weight:bold;
-}
-footer{
-    text-align:center;
-    color:#aaa;
-    padding:20px 0;
-    font-size:14px;
-}
+body{font-family:Arial;background:#111;color:#fff;text-align:center}
+.box{background:#222;padding:15px;margin:15px;border-radius:10px}
+input,button{padding:8px;margin:5px;border-radius:5px;border:none}
+button{background:#0a84ff;color:#fff}
+img{width:100%;max-width:280px;border-radius:10px}
+.hidden{display:none}
 </style>
 </head>
-
 <body>
 
-<header>
-ShopHaiDang - ChungMinhUyTin
-</header>
+<h2>ShopHaiDang - ChungMinhUyTin</h2>
 
-<div class="container">
+<div id="auth" class="box">
+  <button onclick="showLogin()">Đăng nhập</button>
+  <button onclick="showRegister()">Đăng ký</button>
+</div>
 
-<!-- ĐĂNG KÝ / ĐĂNG NHẬP -->
-<div class="section">
-<h2>Đăng ký / Đăng nhập</h2>
+<div id="login" class="box hidden">
+  <h3>Đăng nhập</h3>
+  <input id="luser" placeholder="Tài khoản"><br>
+  <input id="lpass" type="password" placeholder="Mật khẩu"><br>
+  <button onclick="login()">Đăng nhập</button>
+</div>
+
+<div id="register" class="box hidden">
+  <h3>Đăng ký</h3>
+  <input id="ruser" placeholder="Tài khoản"><br>
+  <input id="rpass" type="password" placeholder="Mật khẩu"><br>
+  <button onclick="register()">Tạo tài khoản</button>
+</div>
+
+<div id="user" class="box hidden">
+  <h3>Xin chào <span id="name"></span></h3>
+  <p>Số dư: <b><span id="money"></span>đ</b></p>
+  <button onclick="logout()">Đăng xuất</button>
+</div>
+
 <div class="box">
-<input id="username" placeholder="Tên tài khoản">
-<input id="password" type="password" placeholder="Mật khẩu">
-<button onclick="register()">Đăng ký</button>
-<button onclick="login()">Đăng nhập</button>
-<div class="balance" id="balance"></div>
-</div>
+  <h3>Acc Free Fire #1 - 260đ</h3>
+  <img src="acc1.jpg">
+  <button onclick="buy(260)">Mua acc</button>
 </div>
 
-<!-- NẠP THẺ -->
-<div class="section">
-<h2>Nạp thẻ cào</h2>
 <div class="box">
-<select>
-<option>Chọn mệnh giá</option>
-<option>20.000đ</option>
-<option>50.000đ</option>
-<option>100.000đ</option>
-<option>200.000đ</option>
-<option>500.000đ</option>
-</select>
-<input placeholder="Mã thẻ">
-<input placeholder="Seri thẻ">
-<button>NẠP TIỀN</button>
+  <h3>Acc Free Fire #2 - 900đ</h3>
+  <img src="acc2.jpg">
+  <button onclick="buy(900)">Mua acc</button>
 </div>
-</div>
-
-<!-- BÁN ACC -->
-<div class="section">
-<h2>Acc Free Fire</h2>
-
-<div class="acc-list">
-
-<div class="acc">
-<img src="acc1.jpg" style="width:100%;max-width:260px;border-radius:10px;margin-bottom:8px;">
-<h3>Acc Free Fire #1</h3>
-<div class="price">260.000đ</div>
-<button class="buy" onclick="buy(260000)">Mua ngay</button>
-</div>
-
-<div class="acc">
-<img src="acc2.jpg" style="width:100%;max-width:260px;border-radius:10px;margin-bottom:8px;">
-<h3>Acc Free Fire #2</h3>
-<div class="price">920.000đ</div>
-<button class="buy" onclick="buy(920000)">Mua ngay</button>
-</div>
-
-</div>
-</div>
-
-</div>
-
-<footer>
-<p>Liên hệ Facebook / Zalo để giao dịch</p>
-<p>Uy tín tạo nên thương hiệu</p>
-</footer>
 
 <script>
 let users = JSON.parse(localStorage.getItem("users")) || {};
-let currentUser = null;
+let current = localStorage.getItem("current");
+
+function save(){
+  localStorage.setItem("users",JSON.stringify(users));
+  localStorage.setItem("current",current);
+}
+
+function showLogin(){
+  loginDiv.style.display="block";
+  registerDiv.style.display="none";
+}
+
+function showRegister(){
+  registerDiv.style.display="block";
+  loginDiv.style.display="none";
+}
 
 function register(){
-  let u = username.value;
-  let p = password.value;
-  if(!u || !p) return alert("Nhập đủ thông tin");
-  if(users[u]) return alert("Tài khoản đã tồn tại");
-  users[u] = {password:p, balance:1000000};
-  localStorage.setItem("users", JSON.stringify(users));
-  alert("Đăng ký thành công");
+  let u=ruser.value,p=rpass.value;
+  if(!u||!p) return alert("Nhập đủ");
+  if(users[u]) return alert("Tồn tại");
+  users[u]={pass:p,money:1000};
+  save(); alert("Đăng ký xong");
 }
 
 function login(){
-  let u = username.value;
-  let p = password.value;
-  if(!users[u] || users[u].password !== p) return alert("Sai tài khoản hoặc mật khẩu");
-  currentUser = u;
-  balance.innerText = "Số dư: " + users[u].balance + " VNĐ";
+  let u=luser.value,p=lpass.value;
+  if(!users[u]||users[u].pass!=p) return alert("Sai");
+  current=u; save(); location.reload();
+}
+
+function logout(){
+  current=""; save(); location.reload();
 }
 
 function buy(price){
-  if(!currentUser) return alert("Vui lòng đăng nhập");
-  if(users[currentUser].balance < price) return alert("Không đủ số dư");
-  users[currentUser].balance -= price;
-  localStorage.setItem("users", JSON.stringify(users));
-  balance.innerText = "Số dư: " + users[currentUser].balance + " VNĐ";
-  alert("Mua acc thành công (demo)");
+  if(!current) return alert("Đăng nhập trước");
+  if(users[current].money<price) return alert("Không đủ tiền");
+  users[current].money-=price;
+  save(); alert("Mua thành công");
+  update();
 }
+
+function update(){
+  if(current){
+    auth.style.display="none";
+    user.style.display="block";
+    name.innerText=current;
+    money.innerText=users[current].money;
+  }
+}
+
+const auth=document.getElementById("auth");
+const loginDiv=document.getElementById("login");
+const registerDiv=document.getElementById("register");
+const user=document.getElementById("user");
+
+update();
 </script>
 
 </body>
