@@ -171,33 +171,45 @@ function nap(){
 }
 checkLogin();
 </script>
-<!-- Liên hệ Admin Facebook -->
-<div class="contact-admin">
+<!-- Robot Liên Hệ Admin -->
+<div class="robot-admin">
   <a href="https://www.facebook.com/share/17vBQyER6e/" target="_blank">
-    💬 Liên hệ Admin
+    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Robot Admin">
+    <span>Liên hệ ADM</span>
   </a>
 </div>
 
 <style>
-.contact-admin {
+.robot-admin {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 15px;
+  right: 15px;
   z-index: 9999;
 }
 
-.contact-admin a {
-  background: #1877f2;
-  color: white;
-  padding: 12px 18px;
-  border-radius: 30px;
+.robot-admin a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-decoration: none;
-  font-weight: bold;
+}
+
+.robot-admin img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #fff;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-.contact-admin a:hover {
-  background: #0f5dc4;
+.robot-admin span {
+  margin-top: 6px;
+  background: #1877f2;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>
 </body>
