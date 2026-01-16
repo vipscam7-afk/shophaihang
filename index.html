@@ -4,46 +4,53 @@
 <meta charset="UTF-8">
 <title>ShopHaiDang - ChungMinhUyTin</title>
 <style>
-body{font-family:Arial;background:#111;color:#fff;text-align:center}
-.box{background:#222;padding:15px;margin:15px;border-radius:10px}
+body{margin:0;font-family:Arial;background:#111;color:#fff}
+header{background:#ff9800;padding:15px;position:relative}
+header h2{margin:0}
+.auth-btn{position:absolute;top:15px;right:15px}
+.auth-btn button{margin-left:5px;padding:6px 10px;border:none;border-radius:5px;font-weight:bold;cursor:pointer}
+.container{padding:15px}
+.box{background:#222;padding:15px;margin-bottom:15px;border-radius:10px;text-align:center}
 input,button{padding:8px;margin:5px;border-radius:5px;border:none}
-button{background:#0a84ff;color:#fff}
+button{background:#0a84ff;color:#fff;font-weight:bold}
 img{width:100%;max-width:280px;border-radius:10px}
 .hidden{display:none}
 </style>
 </head>
 <body>
 
-<h2>ShopHaiDang - ChungMinhUyTin</h2>
+<header>
+  <h2>ShopHaiDang - ChungMinhUyTin</h2>
+  <div class="auth-btn" id="authBar">
+    <button onclick="showLogin()">Đăng nhập</button>
+    <button onclick="showRegister()">Đăng ký</button>
+  </div>
+</header>
 
-<div id="auth" class="box">
-  <button onclick="showLogin()">Đăng nhập</button>
-  <button onclick="showRegister()">Đăng ký</button>
-</div>
+<div class="container">
 
-<div id="login" class="box hidden">
+<div id="loginBox" class="box hidden">
   <h3>Đăng nhập</h3>
   <input id="luser" placeholder="Tài khoản"><br>
   <input id="lpass" type="password" placeholder="Mật khẩu"><br>
   <button onclick="login()">Đăng nhập</button>
 </div>
 
-<div id="register" class="box hidden">
+<div id="registerBox" class="box hidden">
   <h3>Đăng ký</h3>
   <input id="ruser" placeholder="Tài khoản"><br>
   <input id="rpass" type="password" placeholder="Mật khẩu"><br>
   <button onclick="register()">Tạo tài khoản</button>
 </div>
 
-<div id="user" class="box hidden">
+<div id="userBox" class="box hidden">
   <h3>Xin chào <span id="name"></span></h3>
   <p>Số dư: <b><span id="money"></span>đ</b></p>
 
   <h4>Nạp tiền</h4>
   <input id="nap" type="number" placeholder="Nhập số tiền">
-  <button onclick="napTien()">Nạp</button>
+  <button onclick="napTien()">Nạp</button><br><br>
 
-  <br><br>
   <button onclick="logout()">Đăng xuất</button>
 </div>
 
@@ -59,9 +66,11 @@ img{width:100%;max-width:280px;border-radius:10px}
   <button onclick="buy(900)">Mua acc</button>
 </div>
 
+</div>
+
 <script>
 let users = JSON.parse(localStorage.getItem("users")) || {};
-let current = localStorage.getItem("current");
+let current = localStorage.getItem("current") || "";
 
 function save(){
   localStorage.setItem("users",JSON.stringify(users));
@@ -69,62 +78,66 @@ function save(){
 }
 
 function showLogin(){
-  loginDiv.style.display="block";
-  registerDiv.style.display="none";
+  loginBox.style.display="block";
+  registerBox.style.display="none";
 }
 
 function showRegister(){
-  registerDiv.style.display="block";
-  loginDiv.style.display="none";
+  registerBox.style.display="block";
+  loginBox.style.display="none";
 }
 
 function register(){
   let u=ruser.value,p=rpass.value;
-  if(!u||!p) return alert("Nhập đủ thông tin");
-  if(users[u]) return alert("Tài khoản tồn tại");
+  if(!u||!p) return alert("❌ Vui lòng nhập đủ thông tin");
+  if(users[u]) return alert("❌ Tài khoản đã tồn tại");
   users[u]={pass:p,money:0};
-  save(); alert("Đăng ký thành công");
+  save();
+  alert("✅ Đăng ký thành công");
+  showLogin();
 }
 
 function login(){
   let u=luser.value,p=lpass.value;
-  if(!users[u]||users[u].pass!=p) return alert("Sai tài khoản hoặc mật khẩu");
-  current=u; save(); location.reload();
+  if(!users[u]||users[u].pass!==p)
+    return alert("❌ Sai tài khoản hoặc mật khẩu");
+  current=u; save();
+  alert("✅ Đăng nhập thành công");
+  update();
 }
 
 function logout(){
-  current=""; save(); location.reload();
+  current=""; save();
+  alert("👋 Đã đăng xuất");
+  location.reload();
 }
 
 function napTien(){
-  let t = parseInt(nap.value);
-  if(!t || t<=0) return alert("Nhập số tiền hợp lệ");
-  users[current].money += t;
+  let t=parseInt(nap.value);
+  if(!t||t<=0) return alert("❌ Số tiền không hợp lệ");
+  users[current].money+=t;
   save(); update();
-  alert("Nạp tiền thành công");
+  alert("✅ Nạp tiền thành công");
 }
 
 function buy(price){
-  if(!current) return alert("Đăng nhập trước");
-  if(users[current].money < price) return alert("Không đủ tiền");
-  users[current].money -= price;
+  if(!current) return alert("❌ Vui lòng đăng nhập");
+  if(users[current].money<price) return alert("❌ Không đủ tiền");
+  users[current].money-=price;
   save(); update();
-  alert("Mua acc thành công");
+  alert("✅ Mua acc thành công");
 }
 
 function update(){
   if(current){
-    auth.style.display="none";
-    user.style.display="block";
+    authBar.style.display="none";
+    userBox.style.display="block";
+    loginBox.style.display="none";
+    registerBox.style.display="none";
     name.innerText=current;
     money.innerText=users[current].money;
   }
 }
-
-const auth=document.getElementById("auth");
-const loginDiv=document.getElementById("login");
-const registerDiv=document.getElementById("register");
-const user=document.getElementById("user");
 
 update();
 </script>
