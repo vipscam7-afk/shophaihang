@@ -11,10 +11,11 @@ header h2{margin:0}
 .auth-btn button{margin-left:5px;padding:6px 10px;border:none;border-radius:5px;font-weight:bold;cursor:pointer}
 .container{padding:15px}
 .box{background:#222;padding:15px;margin-bottom:15px;border-radius:10px;text-align:center}
-input,button{padding:8px;margin:5px;border-radius:5px;border:none}
+input,select,button{padding:8px;margin:5px;border-radius:5px;border:none;width:90%}
 button{background:#0a84ff;color:#fff;font-weight:bold}
 img{width:100%;max-width:280px;border-radius:10px}
 .hidden{display:none}
+.menu button{width:auto;margin:5px}
 </style>
 </head>
 <body>
@@ -29,31 +30,54 @@ img{width:100%;max-width:280px;border-radius:10px}
 
 <div class="container">
 
+<!-- LOGIN -->
 <div id="loginBox" class="box hidden">
   <h3>Đăng nhập</h3>
-  <input id="luser" placeholder="Tài khoản"><br>
-  <input id="lpass" type="password" placeholder="Mật khẩu"><br>
+  <input id="luser" placeholder="Tài khoản">
+  <input id="lpass" type="password" placeholder="Mật khẩu">
   <button onclick="login()">Đăng nhập</button>
 </div>
 
+<!-- REGISTER -->
 <div id="registerBox" class="box hidden">
   <h3>Đăng ký</h3>
-  <input id="ruser" placeholder="Tài khoản"><br>
-  <input id="rpass" type="password" placeholder="Mật khẩu"><br>
+  <input id="ruser" placeholder="Tài khoản">
+  <input id="rpass" type="password" placeholder="Mật khẩu">
   <button onclick="register()">Tạo tài khoản</button>
 </div>
 
+<!-- USER -->
 <div id="userBox" class="box hidden">
   <h3>Xin chào <span id="name"></span></h3>
   <p>Số dư: <b><span id="money"></span>đ</b></p>
 
-  <h4>Nạp tiền</h4>
-  <input id="nap" type="number" placeholder="Nhập số tiền">
-  <button onclick="napTien()">Nạp</button><br><br>
-
-  <button onclick="logout()">Đăng xuất</button>
+  <div class="menu">
+    <button onclick="showNap()">💳 Nạp tiền</button>
+    <button onclick="logout()">🚪 Đăng xuất</button>
+  </div>
 </div>
 
+<!-- NAP TIEN MENU -->
+<div id="napBox" class="box hidden">
+  <h3>Nạp tiền thẻ cào</h3>
+
+  <select id="menhgia">
+    <option value="">-- Chọn mệnh giá --</option>
+    <option value="10000">10.000đ</option>
+    <option value="20000">20.000đ</option>
+    <option value="50000">50.000đ</option>
+    <option value="100000">100.000đ</option>
+    <option value="200000">200.000đ</option>
+  </select>
+
+  <input id="seri" placeholder="Nhập seri thẻ">
+  <input id="mathe" placeholder="Nhập mã thẻ">
+
+  <button onclick="napNgay()">Nạp ngay</button>
+  <button onclick="napBox.style.display='none'">Đóng</button>
+</div>
+
+<!-- SHOP -->
 <div class="box">
   <h3>Acc Free Fire #1 - 260đ</h3>
   <img src="acc1.jpg">
@@ -88,40 +112,44 @@ function showRegister(){
 }
 
 function register(){
-  let u=ruser.value,p=rpass.value;
-  if(!u||!p) return alert("❌ Vui lòng nhập đủ thông tin");
-  if(users[u]) return alert("❌ Tài khoản đã tồn tại");
-  users[u]={pass:p,money:0};
+  if(!ruser.value||!rpass.value) return alert("❌ Nhập đủ thông tin");
+  if(users[ruser.value]) return alert("❌ Tài khoản tồn tại");
+  users[ruser.value]={pass:rpass.value,money:0};
   save();
   alert("✅ Đăng ký thành công");
   showLogin();
 }
 
 function login(){
-  let u=luser.value,p=lpass.value;
-  if(!users[u]||users[u].pass!==p)
+  if(!users[luser.value]||users[luser.value].pass!==lpass.value)
     return alert("❌ Sai tài khoản hoặc mật khẩu");
-  current=u; save();
+  current=luser.value; save();
   alert("✅ Đăng nhập thành công");
   update();
 }
 
 function logout(){
   current=""; save();
-  alert("👋 Đã đăng xuất");
   location.reload();
 }
 
-function napTien(){
-  let t=parseInt(nap.value);
-  if(!t||t<=0) return alert("❌ Số tiền không hợp lệ");
-  users[current].money+=t;
+function showNap(){
+  napBox.style.display="block";
+}
+
+function napNgay(){
+  let mg=menhgia.value;
+  if(!mg||!seri.value||!mathe.value)
+    return alert("❌ Nhập đầy đủ thông tin thẻ");
+
+  users[current].money+=parseInt(mg);
   save(); update();
-  alert("✅ Nạp tiền thành công");
+  alert("✅ Nạp tiền thành công (demo)");
+  napBox.style.display="none";
 }
 
 function buy(price){
-  if(!current) return alert("❌ Vui lòng đăng nhập");
+  if(!current) return alert("❌ Đăng nhập trước");
   if(users[current].money<price) return alert("❌ Không đủ tiền");
   users[current].money-=price;
   save(); update();
@@ -138,7 +166,6 @@ function update(){
     money.innerText=users[current].money;
   }
 }
-
 update();
 </script>
 
