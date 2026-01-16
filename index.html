@@ -6,8 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{margin:0;font-family:Arial;background:#f5f5f5}
-header{background:#fff;padding:10px;display:flex;gap:10px}
+header{background:#fff;padding:10px;display:flex;justify-content:space-between;align-items:center}
 .logo{color:#ff6a00;font-weight:bold;font-size:14px}
+.topUser{font-size:13px}
+.topUser span{color:#ff6a00;font-weight:bold}
 .container{padding:12px}
 .card{background:#fff;border-radius:8px;padding:12px;margin-bottom:15px}
 input,select{width:100%;padding:10px;margin-top:8px;border:1px solid #ddd;border-radius:5px}
@@ -16,6 +18,7 @@ input,select{width:100%;padding:10px;margin-top:8px;border:1px solid #ddd;border
 .bottom div{flex:1;text-align:center;padding:8px;font-size:12px}
 .on{color:#ff6a00;font-weight:bold}
 .hide{display:none}
+a{color:#ff6a00;text-decoration:none}
 </style>
 </head>
 
@@ -23,27 +26,34 @@ input,select{width:100%;padding:10px;margin-top:8px;border:1px solid #ddd;border
 
 <header>
   <div class="logo">SHOPHAIDANG-CHUNGMINHUYTIN</div>
+  <div class="topUser" id="topUser"></div>
 </header>
 
 <div class="container">
 
-<!-- TRANG CHỦ / NẠP THẺ -->
+<!-- TRANG CHỦ -->
 <div class="card" id="home">
+<h3>Trang chủ</h3>
+<p>Chào mừng bạn đến với SHOPHAIDANG-CHUNGMINHUYTIN</p>
+</div>
+
+<!-- NẠP TIỀN -->
+<div class="card hide" id="nap">
 <h3>Nạp thẻ</h3>
 
 <select id="loaithe">
-  <option value="">Chọn loại thẻ</option>
-  <option>Viettel</option>
-  <option>Mobifone</option>
-  <option>Vinaphone</option>
+<option value="">Chọn loại thẻ</option>
+<option>Viettel</option>
+<option>Mobifone</option>
+<option>Vinaphone</option>
 </select>
 
 <select id="menhgia">
-  <option value="">Chọn mệnh giá</option>
-  <option value="50">50</option>
-  <option value="100">100</option>
-  <option value="200">200</option>
-  <option value="500">500</option>
+<option value="">Chọn mệnh giá</option>
+<option value="50">50</option>
+<option value="100">100</option>
+<option value="200">200</option>
+<option value="500">500</option>
 </select>
 
 <input id="seri" placeholder="Nhập số seri">
@@ -72,7 +82,7 @@ input,select{width:100%;padding:10px;margin-top:8px;border:1px solid #ddd;border
 <div id="userBox" class="hide">
 <h3>Thông tin tài khoản</h3>
 <p><b>Tài khoản:</b> <span id="uName"></span></p>
-<p><b>Số dư:</b> <span id="uMoney">0</span> đ</p>
+<p><b>Số dư:</b> <span id="uMoney"></span> đ</p>
 <button class="btn" onclick="logout()">Đăng xuất</button>
 </div>
 
@@ -82,17 +92,14 @@ input,select{width:100%;padding:10px;margin-top:8px;border:1px solid #ddd;border
 
 <div class="bottom">
 <div class="on" onclick="show('home')">Trang chủ</div>
-<div onclick="show('home')">Nạp tiền</div>
+<div onclick="show('nap')">Nạp tiền</div>
 <div onclick="show('account')">Tài khoản</div>
 </div>
 
 <script>
-let currentUser = localStorage.getItem("currentUser");
-
 function show(id){
- document.getElementById("home").classList.add("hide");
- document.getElementById("account").classList.add("hide");
- document.getElementById(id).classList.remove("hide");
+ document.querySelectorAll('.card').forEach(e=>e.classList.add('hide'));
+ document.getElementById(id).classList.remove('hide');
  checkLogin();
 }
 
@@ -101,7 +108,7 @@ function register(){
  if(!u||!p) return alert("Nhập đủ thông tin");
  if(localStorage.getItem(u)) return alert("Tài khoản đã tồn tại");
  localStorage.setItem(u,JSON.stringify({pass:p,money:0}));
- alert("Đăng ký thành công");
+ alert("Tạo tài khoản thành công");
 }
 
 function login(){
@@ -120,27 +127,31 @@ function logout(){
 }
 
 function checkLogin(){
- currentUser=localStorage.getItem("currentUser");
- if(currentUser){
-  let data=JSON.parse(localStorage.getItem(currentUser));
+ let u=localStorage.getItem("currentUser");
+ let top=document.getElementById("topUser");
+ if(u){
+  let d=JSON.parse(localStorage.getItem(u));
+  top.innerHTML=`Số dư: <span>${d.money}</span> đ`;
   loginBox.classList.add("hide");
   userBox.classList.remove("hide");
-  uName.innerText=currentUser;
-  uMoney.innerText=data.money;
+  uName.innerText=u;
+  uMoney.innerText=d.money;
  }else{
+  top.innerHTML=`<a href="#" onclick="show('account')">Đăng nhập</a> | <a href="#" onclick="show('account')">Đăng ký</a>`;
   loginBox.classList.remove("hide");
   userBox.classList.add("hide");
  }
 }
 
 function nap(){
- if(!currentUser) return alert("Vui lòng đăng nhập");
- let loai=loaithe.value,mg=menhgia.value,s=seri.value,m=mathe.value;
- if(!loai||!mg||!s||!m) return alert("Nhập đầy đủ thông tin");
- let data=JSON.parse(localStorage.getItem(currentUser));
- data.money += parseInt(mg);
- localStorage.setItem(currentUser,JSON.stringify(data));
- alert("Nạp thẻ thành công +"+mg+" đ");
+ let u=localStorage.getItem("currentUser");
+ if(!u) return alert("Vui lòng đăng nhập");
+ if(!loaithe.value||!menhgia.value||!seri.value||!mathe.value)
+  return alert("Nhập đầy đủ thông tin");
+ let d=JSON.parse(localStorage.getItem(u));
+ d.money+=parseInt(menhgia.value);
+ localStorage.setItem(u,JSON.stringify(d));
+ alert("Nạp thẻ thành công +"+menhgia.value+" đ");
  checkLogin();
 }
 checkLogin();
