@@ -212,5 +212,21 @@ checkLogin();
   font-weight: bold;
 }
 </style>
+  <script>
+  // Số dư hiện tại (sau này bạn có thể gán động)
+  let soDu = 0; // ví dụ hiện tại 0đ
+
+  function muaAcc(giaAcc) {
+    if (soDu < giaAcc) {
+      alert("❌ Số dư của bạn không đủ để mua acc này!");
+      return;
+    }
+
+    // Nếu đủ tiền
+    soDu -= giaAcc;
+    alert("✅ Mua acc thành công!");
+    // Ở đây bạn có thể chuyển trang hoặc xử lý tiếp
+  }
+</script>
 </body>
 </html>
