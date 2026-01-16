@@ -2,12 +2,12 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>ShopHaiDang-ChungMinhUyTin</title>
+<title>ShopHaiDang - ChungMinhUyTin</title>
 
 <style>
 body{
     margin:0;
-    font-family:Arial,sans-serif;
+    font-family:Arial, sans-serif;
     background:#0f0f0f;
     color:#fff;
 }
@@ -16,22 +16,6 @@ header{
     padding:15px;
     text-align:center;
     font-size:24px;
-    font-weight:bold;
-    position:relative;
-}
-.auth-bar{
-    position:absolute;
-    top:10px;
-    right:15px;
-}
-.auth-bar button{
-    padding:6px 10px;
-    margin-left:5px;
-    border:none;
-    border-radius:5px;
-    background:#000;
-    color:#fff;
-    cursor:pointer;
     font-weight:bold;
 }
 .container{
@@ -52,14 +36,14 @@ header{
     border-radius:10px;
     max-width:420px;
 }
-input,select{
+input, select{
     width:100%;
     padding:10px;
     margin-bottom:10px;
     border-radius:5px;
     border:none;
 }
-button.main{
+button{
     width:100%;
     padding:12px;
     background:#ff9800;
@@ -68,11 +52,6 @@ button.main{
     font-weight:bold;
     cursor:pointer;
 }
-.balance{
-    margin-bottom:10px;
-    font-size:18px;
-    color:#00e676;
-}
 .acc-list{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
@@ -80,54 +59,23 @@ button.main{
 }
 .acc{
     background:#1b1b1b;
+    padding:15px;
     border-radius:10px;
     text-align:center;
-    padding:15px;
 }
 .price{
-    color:#ff5252;
-    font-size:20px;
+    color:#00ff6a;
+    margin:8px 0;
     font-weight:bold;
 }
 .buy{
-    margin-top:10px;
-    padding:10px;
-    background:#00e676;
-    border:none;
-    border-radius:5px;
-    font-weight:bold;
-    cursor:pointer;
+    background:#00c853;
 }
 footer{
-    background:#000;
-    padding:20px;
     text-align:center;
-    color:#ccc;
+    color:#aaa;
+    padding:20px 0;
     font-size:14px;
-}
-
-/* MODAL */
-.modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.7);
-    justify-content:center;
-    align-items:center;
-}
-.modal-box{
-    background:#1b1b1b;
-    padding:20px;
-    width:300px;
-    border-radius:10px;
-    position:relative;
-}
-.close{
-    position:absolute;
-    top:8px;
-    right:12px;
-    font-size:20px;
-    cursor:pointer;
 }
 </style>
 </head>
@@ -135,158 +83,57 @@ footer{
 <body>
 
 <header>
-ShopHaiDang-ChungMinhUyTin
-<div class="auth-bar" id="authBar">
-    <button onclick="openModal('login')">Đăng nhập</button>
-    <button onclick="openModal('register')">Đăng ký</button>
-</div>
+    ShopHaiDang - ChungMinhUyTin
 </header>
 
 <div class="container">
 
-<!-- TÀI KHOẢN -->
-<div class="section" id="userBox" style="display:none;">
-    <h2>Tài khoản của bạn</h2>
-    <div class="box">
-        <div>Xin chào: <b id="userName"></b></div>
-        <div class="balance">Số dư: <span id="balance">0</span>đ</div>
-        <button class="main" onclick="logout()">Đăng xuất</button>
+    <div class="section">
+        <h2>Nạp Thẻ Cào</h2>
+        <div class="box">
+            <select>
+                <option>Chọn mệnh giá</option>
+                <option>20.000đ</option>
+                <option>50.000đ</option>
+                <option>100.000đ</option>
+                <option>200.000đ</option>
+            </select>
+            <input placeholder="Mã thẻ">
+            <input placeholder="Seri thẻ">
+            <button>NẠP TIỀN</button>
+        </div>
     </div>
-</div>
 
-<!-- NẠP THẺ -->
-<div class="section">
-<h2>Nạp Thẻ Cào</h2>
-<div class="box">
-    <select id="menhGia">
-        <option value="">-- Chọn mệnh giá --</option>
-        <option value="20000">20.000đ</option>
-        <option value="50000">50.000đ</option>
-        <option value="100000">100.000đ</option>
-        <option value="200000">200.000đ</option>
-        <option value="500000">500.000đ</option>
-    </select>
-    <input placeholder="Mã thẻ">
-    <input placeholder="Seri thẻ">
-    <button class="main" onclick="napThe()">NẠP TIỀN</button>
-</div>
-</div>
+    <div class="section">
+        <h2>Acc Free Fire</h2>
 
-<!-- ACC -->
-<div class="section">
-<h2>Acc Free Fire</h2>
-<div class="acc-list">
+        <div class="acc-list">
 
-<div class="acc">
-    <img src="images/acc2.jpg" style="width:100%;max-width:280px;border-radius:10px;">
-    <h3>Acc Free Fire #1</h3>
-    <div class="price">260.000đ</div>
-    <button class="buy" onclick="buy(260000)">Mua ngay</button>
-</div>
+            <!-- ACC 1 CÓ ẢNH -->
+            <div class="acc">
+                <img src="acc1.jpg" style="width:100%;max-width:260px;border-radius:10px;margin-bottom:8px;">
+                <h3>Acc Free Fire #1</h3>
+                <div class="price">260.000đ</div>
+                <button class="buy">Mua ngay</button>
+            </div>
 
-<div class="acc">
-    <h3>Acc Free Fire #2</h3>
-    <div class="price">920.000đ</div>
-    <button class="buy" onclick="buy(920000)">Mua ngay</button>
-</div>
+            <!-- ACC 2 CHƯA CÓ ẢNH -->
+            <div class="acc">
+                <h3>Acc Free Fire #2</h3>
+                <div class="price">920.000đ</div>
+                <button class="buy">Mua ngay</button>
+            </div>
 
-</div>
-</div>
+        </div>
+    </div>
 
 </div>
 
 <footer>
-<p>Facebook: Thế Kỉ Tuấn (Thế Kỉ Buôn Acc)</p>
-<p>TikTok: @60mthinghi</p>
-<p>Uy tín tạo nên thương hiệu</p>
+    <p>Facebook: Thế Kì Tuấn (Thế Kì Buôn Acc)</p>
+    <p>TikTok: @60mthinghi</p>
+    <p>Uy tín tạo nên thương hiệu</p>
 </footer>
-
-<!-- MODAL -->
-<div class="modal" id="authModal">
-<div class="modal-box">
-<span class="close" onclick="closeModal()">×</span>
-
-<div id="loginBox">
-<h3>Đăng nhập</h3>
-<input id="loginUser" placeholder="Tên đăng nhập">
-<input id="loginPass" type="password" placeholder="Mật khẩu">
-<button class="main" onclick="login()">Đăng nhập</button>
-</div>
-
-<div id="registerBox">
-<h3>Đăng ký</h3>
-<input id="regUser" placeholder="Tên đăng nhập">
-<input id="regPass" type="password" placeholder="Mật khẩu">
-<button class="main" onclick="register()">Đăng ký</button>
-</div>
-
-</div>
-</div>
-
-<script>
-let currentUser=null;
-
-function openModal(type){
-    authModal.style.display="flex";
-    loginBox.style.display=type==="login"?"block":"none";
-    registerBox.style.display=type==="register"?"block":"none";
-}
-function closeModal(){authModal.style.display="none";}
-
-function register(){
-    let u=regUser.value,p=regPass.value;
-    if(!u||!p) return alert("Nhập đầy đủ!");
-    if(localStorage.getItem("user_"+u)) return alert("Tài khoản đã tồn tại!");
-    localStorage.setItem("user_"+u,JSON.stringify({pass:p,balance:0}));
-    alert("Đăng ký thành công!");
-    closeModal();
-}
-function login(){
-    let u=loginUser.value,p=loginPass.value;
-    let data=localStorage.getItem("user_"+u);
-    if(!data) return alert("Sai tài khoản!");
-    data=JSON.parse(data);
-    if(data.pass!==p) return alert("Sai mật khẩu!");
-    currentUser=u;
-    localStorage.setItem("currentUser",u);
-    loadUser();
-    closeModal();
-}
-function loadUser(){
-    let u=localStorage.getItem("currentUser");
-    if(!u) return;
-    currentUser=u;
-    let data=JSON.parse(localStorage.getItem("user_"+u));
-    userName.innerText=u;
-    balance.innerText=data.balance;
-    userBox.style.display="block";
-    authBar.style.display="none";
-}
-function logout(){
-    localStorage.removeItem("currentUser");
-    location.reload();
-}
-function napThe(){
-    if(!currentUser) return alert("Đăng nhập trước!");
-    let gia=parseInt(menhGia.value);
-    if(!gia) return alert("Chọn mệnh giá!");
-    let data=JSON.parse(localStorage.getItem("user_"+currentUser));
-    data.balance+=gia;
-    localStorage.setItem("user_"+currentUser,JSON.stringify(data));
-    balance.innerText=data.balance;
-    alert("Nạp thành công!");
-}
-function buy(price){
-    if(!currentUser) return alert("Đăng nhập trước!");
-    let data=JSON.parse(localStorage.getItem("user_"+currentUser));
-    if(data.balance<price) return alert("Không đủ số dư!");
-    data.balance-=price;
-    localStorage.setItem("user_"+currentUser,JSON.stringify(data));
-    balance.innerText=data.balance;
-    alert("Mua acc thành công!");
-}
-loadUser();
-</script>
 
 </body>
 </html>
