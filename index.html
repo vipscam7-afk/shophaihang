@@ -6,11 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{margin:0;font-family:Arial;background:#f5f5f5}
-header{background:#fff;padding:10px;display:flex;gap:10px;align-items:center}
+header{background:#fff;padding:10px;display:flex;gap:10px}
 .logo{color:#ff6a00;font-weight:bold;font-size:14px}
-.search{flex:1;display:flex}
-.search input{flex:1;padding:8px;border:1px solid #ddd;border-radius:5px 0 0 5px}
-.search button{padding:8px 12px;border:none;background:#ff6a00;color:#fff;border-radius:0 5px 5px 0}
 .container{padding:12px}
 .card{background:#fff;border-radius:8px;padding:12px;margin-bottom:15px}
 input,select{width:100%;padding:10px;margin-top:8px;border:1px solid #ddd;border-radius:5px}
@@ -26,83 +23,127 @@ input,select{width:100%;padding:10px;margin-top:8px;border:1px solid #ddd;border
 
 <header>
   <div class="logo">SHOPHAIDANG-CHUNGMINHUYTIN</div>
-  <div class="search">
-    <input placeholder="Tìm kiếm">
-    <button>🔍</button>
-  </div>
 </header>
 
 <div class="container">
 
-<!-- TRANG CHỦ + NẠP TIỀN -->
+<!-- TRANG CHỦ / NẠP THẺ -->
 <div class="card" id="home">
-<h3>Nạp tiền</h3>
+<h3>Nạp thẻ</h3>
+
+<select id="loaithe">
+  <option value="">Chọn loại thẻ</option>
+  <option>Viettel</option>
+  <option>Mobifone</option>
+  <option>Vinaphone</option>
+</select>
+
 <select id="menhgia">
   <option value="">Chọn mệnh giá</option>
-  <option>50</option>
-  <option>100</option>
-  <option>200</option>
-  <option>500</option>
+  <option value="50">50</option>
+  <option value="100">100</option>
+  <option value="200">200</option>
+  <option value="500">500</option>
 </select>
+
+<input id="seri" placeholder="Nhập số seri">
+<input id="mathe" placeholder="Nhập mã thẻ">
+
 <button class="btn" onclick="nap()">Nạp ngay</button>
 </div>
 
 <!-- TÀI KHOẢN -->
 <div class="card hide" id="account">
-<h3>Tạo tài khoản</h3>
-<input id="reg_user" placeholder="Tên đăng nhập">
-<input id="reg_pass" type="password" placeholder="Mật khẩu">
-<button class="btn" onclick="register()">Đăng ký</button>
+
+<div id="loginBox">
+<h3>Đăng nhập</h3>
+<input id="login_user" placeholder="Tài khoản">
+<input id="login_pass" type="password" placeholder="Mật khẩu">
+<button class="btn" onclick="login()">Đăng nhập</button>
 
 <hr>
 
-<h3>Đăng nhập</h3>
-<input id="login_user" placeholder="Tên đăng nhập">
-<input id="login_pass" type="password" placeholder="Mật khẩu">
-<button class="btn" onclick="login()">Đăng nhập</button>
+<h3>Tạo tài khoản</h3>
+<input id="reg_user" placeholder="Tài khoản mới">
+<input id="reg_pass" type="password" placeholder="Mật khẩu">
+<button class="btn" onclick="register()">Đăng ký</button>
+</div>
+
+<div id="userBox" class="hide">
+<h3>Thông tin tài khoản</h3>
+<p><b>Tài khoản:</b> <span id="uName"></span></p>
+<p><b>Số dư:</b> <span id="uMoney">0</span> đ</p>
+<button class="btn" onclick="logout()">Đăng xuất</button>
+</div>
+
 </div>
 
 </div>
 
 <div class="bottom">
 <div class="on" onclick="show('home')">Trang chủ</div>
-<div>Danh mục</div>
 <div onclick="show('home')">Nạp tiền</div>
-<div>Mua nick</div>
 <div onclick="show('account')">Tài khoản</div>
 </div>
 
 <script>
+let currentUser = localStorage.getItem("currentUser");
+
 function show(id){
- document.getElementById('home').classList.add('hide')
- document.getElementById('account').classList.add('hide')
- document.getElementById(id).classList.remove('hide')
+ document.getElementById("home").classList.add("hide");
+ document.getElementById("account").classList.add("hide");
+ document.getElementById(id).classList.remove("hide");
+ checkLogin();
 }
 
 function register(){
- let u=document.getElementById('reg_user').value
- let p=document.getElementById('reg_pass').value
- if(!u||!p) return alert('Vui lòng nhập đủ thông tin')
- if(localStorage.getItem(u)) return alert('Tài khoản đã tồn tại')
- localStorage.setItem(u,p)
- alert('Tạo tài khoản thành công')
+ let u=reg_user.value,p=reg_pass.value;
+ if(!u||!p) return alert("Nhập đủ thông tin");
+ if(localStorage.getItem(u)) return alert("Tài khoản đã tồn tại");
+ localStorage.setItem(u,JSON.stringify({pass:p,money:0}));
+ alert("Đăng ký thành công");
 }
 
 function login(){
- let u=document.getElementById('login_user').value
- let p=document.getElementById('login_pass').value
- if(localStorage.getItem(u)===p){
-   alert('Đăng nhập thành công')
+ let u=login_user.value,p=login_pass.value;
+ let data=JSON.parse(localStorage.getItem(u));
+ if(!data||data.pass!==p) return alert("Sai tài khoản hoặc mật khẩu");
+ localStorage.setItem("currentUser",u);
+ alert("Đăng nhập thành công");
+ checkLogin();
+}
+
+function logout(){
+ localStorage.removeItem("currentUser");
+ alert("Đã đăng xuất");
+ checkLogin();
+}
+
+function checkLogin(){
+ currentUser=localStorage.getItem("currentUser");
+ if(currentUser){
+  let data=JSON.parse(localStorage.getItem(currentUser));
+  loginBox.classList.add("hide");
+  userBox.classList.remove("hide");
+  uName.innerText=currentUser;
+  uMoney.innerText=data.money;
  }else{
-   alert('Sai tài khoản hoặc mật khẩu')
+  loginBox.classList.remove("hide");
+  userBox.classList.add("hide");
  }
 }
 
 function nap(){
- let m=document.getElementById('menhgia').value
- if(!m) return alert('Chọn mệnh giá')
- alert('Nạp '+m+' thành công (chưa trừ tiền thật)')
+ if(!currentUser) return alert("Vui lòng đăng nhập");
+ let loai=loaithe.value,mg=menhgia.value,s=seri.value,m=mathe.value;
+ if(!loai||!mg||!s||!m) return alert("Nhập đầy đủ thông tin");
+ let data=JSON.parse(localStorage.getItem(currentUser));
+ data.money += parseInt(mg);
+ localStorage.setItem(currentUser,JSON.stringify(data));
+ alert("Nạp thẻ thành công +"+mg+" đ");
+ checkLogin();
 }
+checkLogin();
 </script>
 
 </body>
